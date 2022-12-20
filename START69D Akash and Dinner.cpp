@@ -29,8 +29,8 @@
 // <3 Happy Coding <3
 
 // Contest ID   :: START69D
-// Problem Name :: Convert to permutation
-// Problem URL  :: https://www.codechef.com/START69D/problems/PERMUTATION
+// Problem Name :: Akash and Dinner
+// Problem URL  :: https://www.codechef.com/START69D/problems/CHEFDINE
 
 /*******************************************************************************
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,6 +47,7 @@ typedef vector<ll> vii;
 typedef vector<vector<ll>> vvi;
 typedef map<int,int> mi;
 typedef map<ll,ll> mii;
+typedef pair<int,int> pi;
 
 // shortcuts
 #define el '\n'
@@ -65,31 +66,33 @@ void optimize();
 
 
 void solve(){
-	int n; cin>>n;
-	int cnt_mx=0, sm=0;
-	vi v(n); getv(v);
+	int n,k; cin>>n>>k;
+	vi a(n),b(n);
+	getv(a); getv(b);
+	mi m;
+	ll sm=0;
 
-	sort(v.rbegin(), v.rend());
 	for(int i=0; i<n; i++){
-		if(i==0){
-			if(v[i]<n){
-				sm += n-v[i];
-				v[i]=n;
-			}
-			continue;
+		auto it = m.find(a[i]); 
+		if(it!=m.end()){
+			if(it->S < b[i]) continue;
 		}
-		// showv(v)
-		if(v[i]<v[i-1]){
-			sm += v[i-1]-1-v[i];
-			v[i]= v[i-1]-1;
-			// cout<<9;
-		} else {
-			// showv(v)
-			cout<<-1; return;
-		}
+		m[a[i]]=b[i];
+	}
+	if(m.size()<k || n<k){
+		cout<<-1; return;
+	}
+	vi v;
+	for(auto it=m.begin(); it!=m.end(); it++){
+		v.push_back(it->S);
+	}
+	sort(v.begin(), v.end());
+	for(int i=0; i<k; i++){
+		sm += v[i];
 	}
 	cout<<sm;
-
+	// showm(m)
+	// showv(a)
 }
 
 int main(){
@@ -111,20 +114,4 @@ void optimize(){
 }
 
 /* Alternatives
-void solve(){
-	int n; cin>>n;
-	vi v(n); getv(v);
-	int min_cost=0;
-
-	sort(all(v));
-
-	for(int i=1; i<=n; i++){
-		if(v[i-1]>i){
-			cout<<-1; return;
-		}
-		min_cost += i-v[i-1];
-	}
-	cout<<min_cost;
-	// showv(v)
-}
 */	
